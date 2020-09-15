@@ -1,0 +1,54 @@
+﻿@model Maximov.SunMessenger.Web.Models.Chat.IndexViewModel
+
+
+
+
+<div class="row">
+    <div class="col-4">
+        <div class="box box_header"></div>
+    </div>
+    <div class="col-8">
+        <div class="box box_header">
+            <div class="chat-details h-100">
+                <span class="chat-details__name"></span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" style="flex: 1 0 0;">
+    <div class="col-4">
+        <div class="box h-100">
+            <div class="sidebar">
+                <div class="chat-creation">
+                    <input type="button" class="btn" value="Приватный" />
+                    <input type="button" class="btn" value="Групповой" />
+                </div>
+
+                <div class="chats sidebar__chats"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="main">
+            <div class="box main__box">
+                <div class="messages main__messages">
+                    <div class="message">
+                        <div class="message__icon"></div>
+                        <div class="message__content">
+                            <span class="message__user-name"></span>
+                            <span class="message__text"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="text" class="form-control d-none" />
+        </div>
+    </div>
+</div>
+
+    <div id="create-direct-chat-modal" class="modal" tabindex="-1" role="dialog"></div>
+
+    @section Scripts{
+        <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
+        <script src="~/js/Chat/index.js"></script>
+    }

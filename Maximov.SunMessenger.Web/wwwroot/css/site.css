@@ -1,0 +1,174 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 13px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 15px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color: #C4C4C4;
+}
+
+/*bootstrap*/
+
+.row{
+    margin-right:-2px;
+    margin-left:-2px;
+}
+
+    .row .col{
+        padding-left:2px;
+        padding-right:2px;
+    }
+
+    .row [class*='col-'] {
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+.row+.row{
+    margin-top:4px;
+}
+
+
+.box {
+    background-color: #ffffff;
+    border-radius: 5px;
+}
+
+.box_header {
+    height: 60px;
+    border-radius: 0 0 5px 5px;
+}
+
+
+.chat-details {
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+
+    .chat-details .chat-details__name {
+        font-size: 20px;
+    }
+
+
+.sidebar {
+    height:100%;
+    display: flex;
+    flex-direction: column;
+}
+
+    .sidebar .sidebar__chats{
+    flex-grow:1;
+}
+
+
+.chat-creation{
+    padding: 5px;
+}
+
+
+.chats {
+    overflow: auto;
+}
+
+
+.chat{
+    padding:5px;
+    border-bottom: 1px solid #000000;
+    display: flex;
+    cursor:pointer;
+}
+
+    .chat .chat__icon {
+        margin-right: 10px;
+        height: 50px;
+        width: 50px;
+        flex-shrink: 0;
+        background: #C4C4C4;
+        border-radius:50%;
+    }
+
+    .chat .chat__name {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .chat .chat__message {
+        font-size: 14px;
+    }
+
+    .chat .chat__id{
+        display:none;
+    }
+
+
+.main{
+    display:flex;
+    flex-direction:column;
+    height: 100%;
+}
+
+    .main .main__messages{}
+
+    .main .main__box{
+        margin-bottom:4px;
+        overflow:auto;
+        flex:1 0 0;
+        display:flex;
+        flex-direction:column-reverse;
+    }
+
+
+.messages{
+    display:flex;
+    flex-direction:column;
+}
+
+
+.message{
+    padding:5px;
+    display: flex;
+}
+
+    .message .message__icon {
+        margin-right: 10px;
+        height: 50px;
+        width: 50px;
+        flex-shrink: 0;
+        background: #C4C4C4;
+        border-radius: 50%;
+    }
+
+    .message .message__text{
+        word-break:break-word;
+        font-size:14px;
+    }
+
+    .message .message__user-name{
+        font-size:14px;
+        font-weight:500;
+    }
+
+
+#direct-chat-creation .found-user {
+    display: flex;
+    justify-content: space-between;
+}
+    #direct-chat-creation .found-user[data-state='is-not-found'] {
+        justify-content: center;
+    }
