@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Maximov.SunMessenger.Core.Interfaces;
 using Maximov.SunMessenger.Core.Users.Objects;
-using Maximov.SunMessenger.Core.Users.Queries;
+using Maximov.SunMessenger.Data.MessengerUnitOfWork.Users.Specifications;
 using Maxinov.SunMessenger.Services.DTO;
 using Maxinov.SunMessenger.Services.UserService.Abstractions;
 using System;
@@ -31,9 +31,17 @@ namespace Maxinov.SunMessenger.Services.UserService
             return userDto;
         }
 
+        public IEnumerable<UserDto> GetUsers(params Guid[] userIds)
+        {
+            var specification = new GetUsersByIdSpecification(userIds);
+            var users = messengerUnit.Users.GetBySpecification(specification);
+            return mapper.Map<IEnumerable<User>, IEnumerable<UserDto>>(users);
+        }
+
         public UserDto FindByLogin(string login)
         {
-            User user = messengerUnit.Users.GetAll().WithLogin(login);
+            var specification = new GetUserByLoginSpecification(login);
+            User user = messengerUnit.Users.GetBySpecification(specification).FirstOrDefault();
             UserDto userDto = mapper.Map<UserDto>(user);
             return userDto;
         }
@@ -41,7 +49,8 @@ namespace Maxinov.SunMessenger.Services.UserService
         public UserDto FindByLoginAndPassword(string login, string password)
         {
             UserDto userDto = null;
-            User user = messengerUnit.Users.GetAll().WithLogin(login);
+            var specification = new GetUserByLoginSpecification(login);
+            User user = messengerUnit.Users.GetBySpecification(specification).FirstOrDefault();
             if (user!=null && user.Password == password)
                 userDto = mapper.Map<UserDto>(user);
 
@@ -54,7 +63,10 @@ namespace Maxinov.SunMessenger.Services.UserService
 
         public UserDto Create(string login, string name, string password)
         {
-            if (messengerUnit.Users.GetAll().WithLogin(login) != null)
+            var specification = new GetUserByLoginSpecification(login);
+            User sameUser = messengerUnit.Users.GetBySpecification(specification).FirstOrDefault();
+
+            if (sameUser != null)
                 throw new ArgumentException("Такой логин уже занят");
 
             User user = new User(name, login, password);

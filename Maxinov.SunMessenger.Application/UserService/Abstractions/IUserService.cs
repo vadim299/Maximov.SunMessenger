@@ -11,5 +11,6 @@ namespace Maxinov.SunMessenger.Services.UserService.Abstractions
         UserDto FindById(Guid userId);
         UserDto FindByLogin(string login);
         UserDto FindByLoginAndPassword(string login, string password);
+        IEnumerable<UserDto> GetUsers(params Guid[] userIds);
     }
 }

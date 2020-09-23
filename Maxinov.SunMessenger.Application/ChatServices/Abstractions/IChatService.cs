@@ -3,6 +3,7 @@ using Maxinov.SunMessenger.Services.ChatServices.DTO;
 using Maxinov.SunMessenger.Services.DirectChatService;
 using Maxinov.SunMessenger.Services.GroupChatService.Abstractions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Maxinov.SunMessenger.Services.ChatServices
@@ -14,7 +15,8 @@ namespace Maxinov.SunMessenger.Services.ChatServices
 
         MessageDto AddMessage(Guid chatId, Guid senderId, string text);
         ChatDto FindById(Guid chatId);
-        IQueryable<ChatDto> GetChats(Guid userId);
-        IQueryable<MessageDto> GetMessages(Guid chatId, Guid userId);
+        IEnumerable<ChatDto> GetChats(Guid userId);
+        IEnumerable<MessageDto> GetMessages(Guid chatId, Guid userId);
+        IEnumerable<(ChatDto Chat, MessageDto LastMessage)> GetChatAndLastMessageList(Guid userId);
     }
 }

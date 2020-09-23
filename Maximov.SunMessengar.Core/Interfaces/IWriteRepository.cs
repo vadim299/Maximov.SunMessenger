@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Maximov.SunMessenger.Core.Interfaces
 {
-    public interface IWriteRepository<T> : IReadRepository<T>
+    public interface IWriteRepository<T> : IReadRepository<T> where T:class
     {
         void Create(T entity);
         void Delete(Guid id);

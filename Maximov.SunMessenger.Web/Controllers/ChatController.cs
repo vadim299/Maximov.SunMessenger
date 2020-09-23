@@ -64,55 +64,43 @@ namespace Maximov.SunMessenger.Web.Controllers
         public JsonResult GetChats()
         {
             Guid userId = authenticationService.GetUserId();
+            var directChatAndLastMessageList = directChatService.GetChatAndLastMessageList(userId);
+            var groupChatAndLastMessageList = groupChatService.GetChatAndLastMessageList(userId);
             List<GetChatsViewModel> getChatsViewModels = new List<GetChatsViewModel>();
-            var directChats = directChatService.GetChats(userId).ToArray();
-            var groupChats = groupChatService.GetChats(userId).ToArray();
-
-            foreach (var chat in directChats)
+            
+            foreach(var chatAndMessage in directChatAndLastMessageList)
             {
-                MessageDto message = directChatService.GetMessages(chat.Id, userId)
-                    .OrderByDescending(e => e.Date)
-                    .FirstOrDefault();
-                if (message == null)
-                    continue;
-
                 ChatViewModel chatViewModel = new ChatViewModel()
                 {
-                    Id = chat.Id,
-                    Name = userService.FindById(chat.UserIds.First(id => id != userId)).Name,
-                    UserIds=chat.UserIds
+                    Id = chatAndMessage.Chat.Id,
+                    Name = userService.FindById(chatAndMessage.Chat.UserIds.First(id => id != userId)).Name,
+                    UserIds = chatAndMessage.Chat.UserIds
                 };
 
                 getChatsViewModels.Add(new GetChatsViewModel()
                 {
                     Chat = chatViewModel,
-                    Message = message
+                    Message = chatAndMessage.Message
                 });
             }
-            foreach (var chat in groupChats)
+
+            foreach(var chatAndMessage in groupChatAndLastMessageList)
             {
-                MessageDto message = groupChatService.GetMessages(chat.Id, userId)
-                    .OrderByDescending(e => e.Date)
-                    .FirstOrDefault();
-
-                if (message == null)
-                    continue;
-
                 ChatViewModel chatViewModel = new ChatViewModel()
                 {
-                    Id = chat.Id,
-                    Name = chat.ChatName,
-                    UserIds = chat.UserIds
+                    Id = chatAndMessage.Chat.Id,
+                    Name = chatAndMessage.Chat.ChatName,
+                    UserIds = chatAndMessage.Chat.UserIds
                 };
 
                 getChatsViewModels.Add(new GetChatsViewModel()
                 {
-                    Chat=chatViewModel,
-                    Message=message
+                    Chat = chatViewModel,
+                    Message = chatAndMessage.Message
                 });
             }
 
-            var model = getChatsViewModels.OrderByDescending(c => c.Message.Date);
+            var model = getChatsViewModels.OrderByDescending(c => c.Message.Date).ToArray();
             return Json(model);
         }
 
@@ -160,7 +148,8 @@ namespace Maximov.SunMessenger.Web.Controllers
             var messages = chatService.GetMessages(chatId, userId)
                 .Where(message => message.Date<(beforeDate??DateTime.MaxValue))
                 .OrderByDescending(m => m.Date)
-                .Take(count ?? int.MaxValue);
+                .Take(count ?? int.MaxValue)
+                .ToArray();
             return Json(messages);
         }
     }

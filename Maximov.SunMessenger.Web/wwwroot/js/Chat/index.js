@@ -80,7 +80,9 @@
                     }
                 })
             }
-            return messages[chatId].slice(count);
+            if (count == null)
+                count = Number.MAX_VALUE;
+            return messages[chatId].slice(0, count);
         },
 
         getUser(userId) {

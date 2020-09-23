@@ -1,17 +1,12 @@
 ﻿@model Maximov.SunMessenger.Web.Models.Chat.IndexViewModel
 
-
-
-
 <div class="row">
     <div class="col-4">
         <div class="box box_header"></div>
     </div>
     <div class="col-8">
         <div class="box box_header">
-            <div class="chat-details h-100">
-                <span class="chat-details__name"></span>
-            </div>
+            <div class="chat-details h-100"></div>
         </div>
     </div>
 </div>
@@ -20,8 +15,7 @@
         <div class="box h-100">
             <div class="sidebar">
                 <div class="chat-creation">
-                    <input type="button" class="btn" value="Приватный" />
-                    <input type="button" class="btn" value="Групповой" />
+                    <input type="button" class="btn btn-primary" value="Приватный" />
                 </div>
 
                 <div class="chats sidebar__chats"></div>
@@ -32,13 +26,13 @@
         <div class="main">
             <div class="box main__box">
                 <div class="messages main__messages">
-                    <div class="message">
+                    @*<div class="message">
                         <div class="message__icon"></div>
                         <div class="message__content">
                             <span class="message__user-name"></span>
                             <span class="message__text"></span>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <input type="text" class="form-control d-none" />

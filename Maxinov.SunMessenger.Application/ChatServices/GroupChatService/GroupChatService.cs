@@ -1,6 +1,4 @@
 ﻿using Maximov.SunMessenger.Core.Chats.Objects.Entities;
-using Maximov.SunMessenger.Core.Chats.Objects.ValueObjects;
-using Maximov.SunMessenger.Core.Chats.Queries;
 using Maximov.SunMessenger.Core.Interfaces;
 using Maximov.SunMessenger.Core.Messages.Objects;
 using Maximov.SunMessenger.Core.Users.Objects;
@@ -11,6 +9,7 @@ using System.Text;
 using Maxinov.SunMessenger.Services.ChatService.DTO;
 using Maxinov.SunMessenger.Services.GroupChatService.Abstractions;
 using AutoMapper;
+using Maximov.SunMessenger.Data.MessengerUnitOfWork.GroupChats.Specifications;
 
 namespace Maxinov.SunMessenger.Services.GroupChatService
 {
@@ -27,37 +26,47 @@ namespace Maxinov.SunMessenger.Services.GroupChatService
 
         #region Queries
 
-        public IQueryable<GroupChatDto> GetChats(Guid userId)
-        {   
-            IQueryable<GroupChat> groupChats = messengerUnit.GroupChats.GetAll()
-                                                                       .WithUser(userId);
+        public IEnumerable<GroupChatDto> GetChats(Guid userId)
+        {
+            var specification = new GetGroupChatsWithUsersSpecification(userId);
 
-            IQueryable<GroupChatDto> chatDtos = mapper.ProjectTo<GroupChatDto>(groupChats);
+            IEnumerable<GroupChat> groupChats = messengerUnit.GroupChats.GetBySpecification(specification);
             
-            return chatDtos;
+            return mapper.Map<IEnumerable<GroupChat>, IEnumerable<GroupChatDto>>(groupChats);
         }
 
-        public IQueryable<MessageDto> GetMessages(Guid chatId, Guid userId)
+        public IEnumerable<MessageDto> GetMessages(Guid chatId, Guid userId)
         {
+            GroupChat groupChat = messengerUnit.GroupChats.FindById(chatId);
 
-            IQueryable<Message> messages = from chat in messengerUnit.GroupChats.GetAll()
-                                           from userHistory in chat.UserHistory
-                                           from messageLink in chat.MessageLinks
-                                           join message in messengerUnit.Messages.GetAll() on messageLink.MessageId equals message.Id
-                                           where chat.Id == chatId && userHistory.UserId == userId
-                                                 && message.ActiveFrom >= userHistory.DateFrom
-                                                 && message.ActiveFrom <= (userHistory.DateTo ?? DateTime.MaxValue)
-                                           select message;
+            if (groupChat?.UserHistory.Any(uh => uh.UserId == userId)!=true)
+                return Enumerable.Empty<MessageDto>();
 
-            IQueryable<MessageDto> messageDtos = mapper.ProjectTo<MessageDto>(messages);
+            var messages = messengerUnit.Messages.GetMessages(userId, groupChat.Id);
 
-            return messageDtos;
+            return mapper.Map<IEnumerable<Message>, IEnumerable<MessageDto>>(messages);
+        }
+
+        public IEnumerable<(GroupChatDto, MessageDto)> GetChatAndLastMessageList(Guid userId)
+        {
+            var chatSpecification = new GetGroupChatsWithUsersSpecification(userId);
+            IEnumerable<GroupChat> chats = messengerUnit.GroupChats.GetBySpecification(chatSpecification);
+            var chatDtos = mapper.Map<IEnumerable<GroupChat>, IEnumerable<GroupChatDto>>(chats);
+            var chatIds = chats.Select(c => c.Id).ToArray();
+
+            var messages = messengerUnit.Messages.GetLastMessages(userId, chatIds);
+            var messageDtos = mapper.Map<IEnumerable<Message>, IEnumerable<MessageDto>>(messages);
+            var chatMessageList = from chat in chatDtos
+                                  from message in messageDtos
+                                  where message.ChatIds.Any(chatId => chatId == chat.Id)
+                                  select (chat, message);
+            return chatMessageList;
         }
 
         public GroupChatDto FindById(Guid chatId)
         {
             GroupChat chat = messengerUnit.GroupChats.FindById(chatId);
-            return mapper.Map<GroupChatDto>(chat);
+            return mapper.Map<GroupChat, GroupChatDto>(chat);
         }
 
         #endregion
@@ -82,7 +91,6 @@ namespace Maxinov.SunMessenger.Services.GroupChatService
             GroupChat groupChat = messengerUnit.GroupChats.FindById(chatId);
 
             groupChat.AddUser(user);
-            messengerUnit.GroupChats.Update(groupChat);
             messengerUnit.SaveChanges();
         }
 
@@ -90,11 +98,9 @@ namespace Maxinov.SunMessenger.Services.GroupChatService
         {
             GroupChat chat = messengerUnit.GroupChats.FindById(chatId);
             User user = messengerUnit.Users.FindById(senderId);
-            Message message = new Message(user, text);
+            Message message = new Message(user, text, chat);
 
-            chat.AddMessage(message);
             messengerUnit.Messages.Create(message);
-            messengerUnit.GroupChats.Update(chat);
             messengerUnit.SaveChanges();
 
             MessageDto messageDto = mapper.Map<MessageDto>(message);

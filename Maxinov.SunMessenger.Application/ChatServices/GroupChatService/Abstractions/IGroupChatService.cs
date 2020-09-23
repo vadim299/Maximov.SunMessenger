@@ -1,5 +1,6 @@
 ﻿using Maxinov.SunMessenger.Services.ChatService.DTO;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Maxinov.SunMessenger.Services.GroupChatService.Abstractions
@@ -9,15 +10,9 @@ namespace Maxinov.SunMessenger.Services.GroupChatService.Abstractions
         MessageDto AddMessage(Guid chatId, Guid senderId, string text);
         void AddUser(Guid chatId, Guid userId);
         GroupChatDto Create(Guid creatorId, string chatName);
-        IQueryable<GroupChatDto> GetChats(Guid userId);
-
-        /// <summary>
-        /// Получает сообщения для чата отсортированные по убыванию date
-        /// </summary>
-        /// <param name="chatId"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        IQueryable<MessageDto> GetMessages(Guid chatId, Guid userId);
+        IEnumerable<GroupChatDto> GetChats(Guid userId);
+        IEnumerable<(GroupChatDto Chat, MessageDto Message)> GetChatAndLastMessageList(Guid userId);
+        IEnumerable<MessageDto> GetMessages(Guid chatId, Guid userId);
         GroupChatDto FindById(Guid chatId);
     }
 }

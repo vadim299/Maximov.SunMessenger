@@ -5,9 +5,10 @@ using System.Linq;
 
 namespace Maximov.SunMessenger.Core.Interfaces
 {
-    public interface IReadRepository<T>
+    public interface IReadRepository<T> where T:class
     {
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
+        IEnumerable<T> GetBySpecification(ISpecification<T> specification);
         T FindById(Guid id);
     }
 }

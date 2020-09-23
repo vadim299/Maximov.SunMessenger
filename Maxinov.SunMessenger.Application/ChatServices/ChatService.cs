@@ -1,4 +1,5 @@
-﻿using Maxinov.SunMessenger.Services.ChatService.DTO;
+﻿using AutoMapper;
+using Maxinov.SunMessenger.Services.ChatService.DTO;
 using Maxinov.SunMessenger.Services.ChatServices.DTO;
 using Maxinov.SunMessenger.Services.DirectChatService;
 using Maxinov.SunMessenger.Services.GroupChatService.Abstractions;
@@ -11,43 +12,53 @@ namespace Maxinov.SunMessenger.Services.ChatServices
 {
     public class ChatService : IChatService
     {
-        private readonly IDirectChatService directChatService;
-        private readonly IGroupChatService groupChatService;
+        private readonly IMapper mapper;
 
-        public ChatService(IDirectChatService directChatService, IGroupChatService groupChatService)
+        public ChatService(IDirectChatService directChatService, IGroupChatService groupChatService, IMapper mapper)
         {
-            this.directChatService = directChatService;
-            this.groupChatService = groupChatService;
+            this.DirectChatService = directChatService;
+            this.GroupChatService = groupChatService;
+            this.mapper = mapper;
         }
 
-        public IDirectChatService DirectChatService { get => directChatService; }
-        public IGroupChatService GroupChatService { get => groupChatService; }
+        public IDirectChatService DirectChatService { get; }
+        public IGroupChatService GroupChatService { get; }
 
         public ChatDto FindById(Guid chatId)
         {
-            return (ChatDto)directChatService.FindById(chatId) ?? groupChatService.FindById(chatId);
+            return mapper.Map<ChatDto>(DirectChatService.FindById(chatId))
+                ?? mapper.Map<ChatDto>(GroupChatService.FindById(chatId));
         }
 
         public MessageDto AddMessage(Guid chatId, Guid senderId, string text)
         {
-            if (directChatService.FindById(chatId) != null)
-                return directChatService.AddMessage(chatId, senderId, text);
-            else
-                return groupChatService.AddMessage(chatId, senderId, text);
+            if (FindById(chatId)?.ChatType == ChatTypes.Direct)
+                return DirectChatService.AddMessage(chatId, senderId, text);
+            else return GroupChatService.AddMessage(chatId, senderId, text);
         }
 
-        public IQueryable<ChatDto> GetChats(Guid userId)
+        public IEnumerable<ChatDto> GetChats(Guid userId)
         {
-            return directChatService.GetChats(userId).Cast<ChatDto>()
-                .Union(groupChatService.GetChats(userId));
+            return mapper.Map<IEnumerable<DirectChatDto>,IEnumerable<ChatDto>>(DirectChatService.GetChats(userId))
+                .Union(mapper.Map<IEnumerable<GroupChatDto>, IEnumerable<ChatDto>>(GroupChatService.GetChats(userId)));
         }
 
-        public IQueryable<MessageDto> GetMessages(Guid chatId, Guid userId)
+        public IEnumerable<MessageDto> GetMessages(Guid chatId, Guid userId)
         {
-            if (directChatService.FindById(chatId) != null)
-                return directChatService.GetMessages(chatId, userId);
+            if (FindById(chatId)?.ChatType==ChatTypes.Direct)
+                return DirectChatService.GetMessages(chatId, userId);
             else
-                return groupChatService.GetMessages(chatId, userId);
+                return GroupChatService.GetMessages(chatId, userId);
+        }
+
+        public IEnumerable<(ChatDto Chat, MessageDto LastMessage)> GetChatAndLastMessageList(Guid userId)
+        {
+            var directChatMessageList = from item in DirectChatService.GetChatAndLastMessageList(userId)
+                                        select (mapper.Map<DirectChatDto, ChatDto>(item.Chat), item.Message);
+            var groupChatMessageList = from item in GroupChatService.GetChatAndLastMessageList(userId)
+                                       select (mapper.Map<GroupChatDto, ChatDto>(item.Chat), item.Message);
+
+            return directChatMessageList.Union(groupChatMessageList);
         }
     }
 }
