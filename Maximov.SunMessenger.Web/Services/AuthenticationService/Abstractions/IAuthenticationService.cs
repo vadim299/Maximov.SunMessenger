@@ -1,4 +1,4 @@
-﻿using Maxinov.SunMessenger.Services.DTO;
+﻿using Maximov.SunMessenger.Services.DTO;
 using OperationResult;
 using System;
 using System.Threading.Tasks;

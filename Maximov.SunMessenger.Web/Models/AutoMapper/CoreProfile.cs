@@ -2,8 +2,8 @@
 using Maximov.SunMessenger.Web.Models.Shared.Chat;
 using Maximov.SunMessenger.Web.Models.Shared.Message;
 using Maximov.SunMessenger.Web.Models.Shared.User;
-using Maxinov.SunMessenger.Services.ChatService.DTO;
-using Maxinov.SunMessenger.Services.DTO;
+using Maximov.SunMessenger.Services.ChatService.DTO;
+using Maximov.SunMessenger.Services.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

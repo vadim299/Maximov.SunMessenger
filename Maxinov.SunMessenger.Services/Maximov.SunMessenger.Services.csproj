@@ -11,12 +11,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.5" />
+    <ProjectReference Include="..\Maximov.SunMessengar.Core\Maximov.SunMessenger.Core.csproj" />
+    <ProjectReference Include="..\Maximov.SunMessenger.Data\Maximov.SunMessenger.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Maximov.SunMessengar.Core\Maximov.SunMessenger.Core.csproj" />
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ChatServices\DTO\Chat\" />
   </ItemGroup>
 
 </Project>

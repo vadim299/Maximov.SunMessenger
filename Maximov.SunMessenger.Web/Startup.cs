@@ -15,7 +15,7 @@ using Maximov.SunMessenger.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Maximov.SunMessenger.Web.Configuration;
 using AutoMapper;
-using Maxinov.SunMessenger.Services.DTO.AutoMapper;
+using Maximov.SunMessenger.Services.DTO.AutoMapper;
 using Maximov.SunMessenger.Web.SignalR.Chat;
 
 namespace Maximov.SunMessenger.Web

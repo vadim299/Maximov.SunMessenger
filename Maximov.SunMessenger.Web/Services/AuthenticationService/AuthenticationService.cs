@@ -1,7 +1,7 @@
 ﻿using Maximov.SunMessenger.Web.Services.AuthenticationService.Abstractions;
-using Maxinov.SunMessenger.Services.DTO;
-using Maxinov.SunMessenger.Services.UserService;
-using Maxinov.SunMessenger.Services.UserService.Abstractions;
+using Maximov.SunMessenger.Services.DTO;
+using Maximov.SunMessenger.Services.UserService;
+using Maximov.SunMessenger.Services.UserService.Abstractions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
@@ -19,7 +19,7 @@ namespace Maximov.SunMessenger.Web.Services.AuthenticationService
     public class AuthenticationService : Abstractions.IAuthenticationService
     {
         private readonly HttpContext httpContext;
-        private readonly Maxinov.SunMessenger.Services.UserService.Abstractions.IUserService userService;
+        private readonly Maximov.SunMessenger.Services.UserService.Abstractions.IUserService userService;
 
         public AuthenticationService(IHttpContextAccessor httpContextAccessor,
             IUserService userService)

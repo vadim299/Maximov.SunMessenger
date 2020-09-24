@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Authorization;
-using Maxinov.SunMessenger.Services.ChatService.DTO;
-using Maxinov.SunMessenger.Services.DirectChatService;
-using Maxinov.SunMessenger.Services.GroupChatService.Abstractions;
+using Maximov.SunMessenger.Services.ChatService.DTO;
+using Maximov.SunMessenger.Services.DirectChatService;
+using Maximov.SunMessenger.Services.GroupChatService.Abstractions;
 using Maximov.SunMessenger.Web.Services.AuthenticationService.Abstractions;
-using Maxinov.SunMessenger.Services.ChatServices;
-using Maxinov.SunMessenger.Services.ChatServices.DTO;
+using Maximov.SunMessenger.Services.ChatServices;
+using Maximov.SunMessenger.Services.ChatServices.DTO;
 
 namespace Maximov.SunMessenger.Web.SignalR.Chat
 {

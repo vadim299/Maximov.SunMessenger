@@ -20,14 +20,13 @@
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="CSharp.OperationResult" Version="0.1.6" />
-    <PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Maximov.SunMessengar.Core\Maximov.SunMessenger.Core.csproj" />
     <ProjectReference Include="..\Maximov.SunMessenger.Data\Maximov.SunMessenger.Data.csproj" />
-    <ProjectReference Include="..\Maxinov.SunMessenger.Application\Maxinov.SunMessenger.Services.csproj" />
+    <ProjectReference Include="..\Maxinov.SunMessenger.Services\Maximov.SunMessenger.Services.csproj" />
   </ItemGroup>
 
 

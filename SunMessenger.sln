@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maximov.SunMessenger.Web", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{3CC34FCB-7F87-406C-91BD-17311ACDA253}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maxinov.SunMessenger.Services", "Maxinov.SunMessenger.Application\Maxinov.SunMessenger.Services.csproj", "{7180FF77-677A-45C6-B339-194987B3F314}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Maximov.SunMessenger.Services", "Maxinov.SunMessenger.Services\Maximov.SunMessenger.Services.csproj", "{7180FF77-677A-45C6-B339-194987B3F314}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{FD8D4834-FB7B-4E75-AD2C-62028240631A}"
 EndProject

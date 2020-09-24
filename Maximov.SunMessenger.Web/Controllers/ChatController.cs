@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Maximov.SunMessenger.Web.Services.AuthenticationService.Abstractions;
 using Maximov.SunMessenger.Web.Models.Chat;
-using Maxinov.SunMessenger.Services.UserService.Abstractions;
-using Maxinov.SunMessenger.Services.ChatService;
-using Maxinov.SunMessenger.Services.ChatService.DTO;
-using Maxinov.SunMessenger.Services.DirectChatService;
-using Maxinov.SunMessenger.Services.GroupChatService.Abstractions;
+using Maximov.SunMessenger.Services.UserService.Abstractions;
+using Maximov.SunMessenger.Services.ChatService;
+using Maximov.SunMessenger.Services.ChatService.DTO;
+using Maximov.SunMessenger.Services.DirectChatService;
+using Maximov.SunMessenger.Services.GroupChatService.Abstractions;
 using Maximov.SunMessenger.Web.Models.Shared.Chat;
 using Maximov.SunMessenger.Web.Models.Shared.User;
-using Maxinov.SunMessenger.Services.ChatServices;
+using Maximov.SunMessenger.Services.ChatServices;
 using AutoMapper;
 
 namespace Maximov.SunMessenger.Web.Controllers
